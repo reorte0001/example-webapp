@@ -11,7 +11,7 @@ pipeline {
             steps {
                 echo 'Starting to build the project builder docker image'
                 script {
-                    builderImage = docker.build("localhost:5000/example-webapp-builder:$(git rev-parse HEAD)", "-f ./Dockerfile.builder .")
+                    builderImage = docker.build("localhost:5000/example-webapp-builder:latest", "-f ./Dockerfile.builder .")
                     builderImage.push()
                     builderImage.inside('-v $WORKSPACE:/output -u root') {
                         sh """
@@ -41,7 +41,7 @@ pipeline {
             steps {
                 echo 'Starting to build docker image'
                 script {
-                    productionImage = docker.build("localhost:5000/example-webapp:$(git rev-parse HEAD)")
+                    productionImage = docker.build("localhost:5000/example-webapp:latest")
                     productionImage.push()
 
                 }
