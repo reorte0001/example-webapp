@@ -11,7 +11,7 @@ pipeline {
             steps {
                 echo 'Starting to build the project builder docker image'
                 script {
-                    builderImage = docker.build("localhost:5000/example-webapp-builder:latest", "-f ./Dockerfile.builder .")
+                    builderImage = docker.build("localhost:5000/example-webapp-builder:$(git rev.parse HEAD)", "-f ./Dockerfile.builder .")
                     builderImage.push()
                     builderImage.push("${env.GIT_BRANCH}")
                     builderImage.inside('-v ${env.WORKSPACE}:/output -u root') {
@@ -42,7 +42,7 @@ pipeline {
             steps {
                 echo 'Starting to build docker image'
                 script {
-                    productionImage = docker.build("localhost:5000/example-webapp:latest")
+                    productionImage = docker.build("localhost:5000/example-webapp:$(git rev.parse HEAD)")
                     productionImage.push()
                     builderImage.push("${env.GIT_BRANCH}")
 
