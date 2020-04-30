@@ -13,7 +13,6 @@ pipeline {
                 script {
                     builderImage = docker.build("localhost:5000/example-webapp-builder:93cad6750d122913bbc842174033a6b937549f02", "-f ./Dockerfile.builder .")
                     builderImage.push()
-                    builderImage.push("${env.GIT_BRANCH}")
                     builderImage.inside('-v $WORKSPACE:/output -u root') {
                         sh """
                            cd /output
@@ -44,7 +43,7 @@ pipeline {
                 script {
                     productionImage = docker.build("localhost:5000/example-webapp:93cad6750d122913bbc842174033a6b937549f02")
                     productionImage.push()
-                    
+
                 }
             }
         }
